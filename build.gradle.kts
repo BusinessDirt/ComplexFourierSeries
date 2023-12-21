@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "github.dp1key"
+group = "dp1key.cfs"
 version = "1.0-SNAPSHOT"
 
 repositories {

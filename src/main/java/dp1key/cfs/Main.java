@@ -1,4 +1,4 @@
-package github.dp1key;
+package dp1key.cfs;
 
 public class Main {
     public static void main(String[] args) {
