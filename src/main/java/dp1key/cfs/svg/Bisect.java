@@ -1,11 +1,11 @@
 package dp1key.cfs.svg;
 
 public class Bisect {
-    public static double bisect_right(double[] A, double x) {
+    public static int bisect_right(double[] A, double x) {
         return bisect_right(A, x, 0, A.length);
     }
 
-    public static double bisect_right(double[] A, double x, int lo, int hi) {
+    public static int bisect_right(double[] A, double x, int lo, int hi) {
         int N = A.length;
         if (N == 0) return 0;
         if (x < A[lo]) return lo;
@@ -23,11 +23,11 @@ public class Bisect {
         }
     }
 
-    public static double bisect_left(double[] A, double x) {
+    public static int bisect_left(double[] A, double x) {
         return bisect_left(A, x, 0, A.length);
     }
 
-    public static double bisect_left(double[] A, double x, int lo, int hi) {
+    public static int bisect_left(double[] A, double x, int lo, int hi) {
         int N = A.length;
         if (N == 0) return 0;
         if (x < A[lo]) return lo;

@@ -1,5 +1,6 @@
 package dp1key.cfs.svg.path;
 
+import dp1key.cfs.svg.Bisect;
 import dp1key.cfs.svg.ComplexNumber;
 
 import java.util.Arrays;
@@ -18,6 +19,10 @@ public class Path {
     private final double EMPTY_VALUE = -1.0;
     private final int MIN_DEPTH = 5;
     private final double ERROR = 1e-12;
+
+    public Path() {
+        this(new LinkedList<>());
+    }
 
     public Path(SVGElement[] segments) {
         this((LinkedList<SVGElement>) List.of(segments));
@@ -75,7 +80,11 @@ public class Path {
         if (pos == 1.0) return this.segments.getLast().point(pos);
 
         this.calcLengths(ERROR, MIN_DEPTH);
+        int i = Bisect.bisect_right(this.fractions.stream().mapToDouble(e -> e).toArray(), pos);
 
+        if (i == 0) return this.segments.get(i).point(pos / this.fractions.get(0));
+        double segmentPos = (pos - this.fractions.get(i - 1) / (this.fractions.get(i) - this.fractions.get(i - 1)));
+        return this.segments.get(i).point(segmentPos);
     }
 
     @Override
