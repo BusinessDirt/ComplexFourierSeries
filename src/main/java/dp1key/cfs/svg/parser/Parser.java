@@ -1,14 +1,13 @@
 package dp1key.cfs.svg.parser;
 
-import dp1key.cfs.svg.path.Path;
+import dp1key.cfs.svg.ComplexNumber;
+import dp1key.cfs.svg.path.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Parser {
 
@@ -39,8 +38,8 @@ public class Parser {
     public static Path parsePath(String path) {
         List<String> elements = tokenizePath(path);
         Path segments = new Path();
-        double startPos = 0;
-        String command = null, lastCommand = null;
+        ComplexNumber startPos = null, currentPos = new ComplexNumber();
+        String command = null, lastCommand = "";
         boolean absolute = false;
 
         while (!elements.isEmpty()) {
@@ -58,29 +57,129 @@ public class Parser {
 
             switch (command) {
                 case "M":
+                    // Moveto command
+                    double x = Double.parseDouble(elements.remove(0));
+                    double y = Double.parseDouble(elements.remove(0));
+                    ComplexNumber pos = new ComplexNumber(x, y);
+                    if (absolute)
+                        currentPos = pos;
+                    else
+                        currentPos.add(pos);
+                    segments.add(new Move(currentPos));
+                    startPos = currentPos;
+                    command = "L";
                     break;
                 case "Z":
+                    // close path
+                    segments.add(new Close(currentPos, startPos));
+                    currentPos = startPos;
+                    startPos = null;
+                    command = "";
                     break;
                 case "L":
+                    x = Double.parseDouble(elements.remove(0));
+                    y = Double.parseDouble(elements.remove(0));
+                    pos = new ComplexNumber(x, y);
+                    if (!absolute) pos.add(currentPos);
+                    segments.add(new Line(currentPos, pos));
+                    currentPos = pos;
                     break;
                 case "H":
+                    x = Double.parseDouble(elements.remove(0));
+                    pos = new ComplexNumber(x, currentPos.getImaginary());
+                    if (!absolute) pos.add(currentPos.getReal());
+                    segments.add(new Line(currentPos, pos));
+                    currentPos = pos;
                     break;
                 case "V":
+                    y = Double.parseDouble(elements.remove(0));
+                    pos = new ComplexNumber(currentPos.getReal(), y);
+                    if (!absolute) pos.add(new ComplexNumber(0, currentPos.getImaginary()));
+                    segments.add(new Line(currentPos, pos));
+                    currentPos = pos;
                     break;
                 case "C":
+                    ComplexNumber control1 = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+                    ComplexNumber control2 = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+                    ComplexNumber end = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+
+                    if (!absolute) {
+                        control1.add(currentPos);
+                        control2.add(currentPos);
+                        end.add(currentPos);
+                    }
+
+                    segments.add(new CubicBezier(currentPos, control1, control2, end));
+                    currentPos = end;
                     break;
                 case "S":
+                    // smooth curve
+                    if ("CS".contains(lastCommand)) {
+                        control1 = currentPos;
+                    } else {
+                        CubicBezier l = (CubicBezier) segments.getLast();
+                        control1 = ComplexNumber.add(currentPos, ComplexNumber.subtract(currentPos, l.getControl2()));
+                    }
+                    control2 = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+                    end = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+
+                    if (!absolute) {
+                        control2.add(currentPos);
+                        end.add(currentPos);
+                    }
+                    segments.add(new CubicBezier(currentPos, control1, control2, end));
+                    currentPos = end;
                     break;
                 case "Q":
+                    ComplexNumber control = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+                    end = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+
+                    if (!absolute) {
+                        control.add(currentPos);
+                        end.add(currentPos);
+                    }
+
+                    segments.add(new QuadraticBezier(currentPos, control, end));
+                    currentPos = end;
                     break;
                 case "T":
+                    if ("QT".contains(lastCommand))
+                        control = currentPos;
+                    else {
+                        QuadraticBezier l = (QuadraticBezier) segments.getLast();
+                        control = ComplexNumber.add(currentPos, ComplexNumber.subtract(currentPos, l.getControl()));
+                    }
+                    end = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+
+                    if (!absolute) end.add(currentPos);
+                    segments.add(new QuadraticBezier(currentPos, control, end));
+                    currentPos = end;
                     break;
                 case "A":
+                    ComplexNumber radius = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+                    double rotation = Double.parseDouble(elements.remove(0));
+                    boolean arc = Boolean.parseBoolean(elements.remove(0));
+                    boolean sweep = Boolean.parseBoolean(elements.remove(0));
+                    end = new ComplexNumber(Double.parseDouble(elements.remove(0)),
+                            Double.parseDouble(elements.remove(0)));
+
+                    if (!absolute) end.add(currentPos);
+                    segments.add(new Arc(currentPos, radius, rotation, arc, sweep, end));
+                    currentPos = end;
                     break;
             }
         }
 
-        return null;
+        return segments;
     }
 
 }

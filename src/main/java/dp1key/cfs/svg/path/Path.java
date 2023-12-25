@@ -35,8 +35,16 @@ public class Path {
         this.length = EMPTY_VALUE;
     }
 
+    public boolean add(SVGElement element) {
+        return this.segments.add(element);
+    }
+
     public SVGElement getItem(int index) {
         return this.segments.get(index);
+    }
+
+    public SVGElement getLast() {
+        return this.segments.getLast();
     }
 
     public void setItem(int index, SVGElement value) {

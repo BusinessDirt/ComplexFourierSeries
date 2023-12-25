@@ -37,6 +37,10 @@ public class ComplexNumber {
         this.set(ComplexNumber.divide(this, z));
     }
 
+    public void add(double n) {
+        this.set(ComplexNumber.add(this, n));
+    }
+
     public void multiply(double n) {
         this.set(ComplexNumber.multiply(this, n));
     }
@@ -134,18 +138,22 @@ public class ComplexNumber {
         return new ComplexNumber(_real, _imaginary);
     }
 
+    public static ComplexNumber divide(ComplexNumber z1, ComplexNumber z2) {
+        ComplexNumber output = multiply(z1, z2.conjugate());
+        double div = Math.pow(z2.mod(), 2);
+        return new ComplexNumber(output.real / div, output.imaginary / div);
+    }
+
+    public static ComplexNumber add(ComplexNumber z, double n) {
+        return new ComplexNumber(z.getReal() + n, z.getImaginary());
+    }
+
     public static ComplexNumber multiply(ComplexNumber z, double n) {
         return new ComplexNumber(z.getReal() * n, z.getImaginary() * n);
     }
 
     public static ComplexNumber divide(ComplexNumber z, double n) {
         return new ComplexNumber(z.getReal() / n, z.getImaginary() / n);
-    }
-
-    public static ComplexNumber divide(ComplexNumber z1, ComplexNumber z2) {
-        ComplexNumber output = multiply(z1, z2.conjugate());
-        double div = Math.pow(z2.mod(), 2);
-        return new ComplexNumber(output.real / div, output.imaginary / div);
     }
 
     public static ComplexNumber parseComplex(String str) {

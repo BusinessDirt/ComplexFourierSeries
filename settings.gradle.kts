@@ -1,2 +1,2 @@
-rootProject.name = "CompleFourierSeries"
+rootProject.name = "ComplexFourierSeries"
 

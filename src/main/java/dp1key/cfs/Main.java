@@ -10,5 +10,9 @@ public class Main {
         Document doc = XMLHandler.getDocumentFromFile("twitter.svg");
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
         Path[] parsed = Parser.parsePaths(paths);
+
+        for (Path path : parsed) {
+            System.out.println(path);
+        }
     }
 }
