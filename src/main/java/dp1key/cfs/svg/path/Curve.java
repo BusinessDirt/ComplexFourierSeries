@@ -16,10 +16,10 @@ public interface Curve {
         double secondHalf = ComplexNumber.subtract(endPoint, midPoint).mod();
         double length2 = firstHalf + secondHalf;
 
-        if (length2 - length > error || depth < minDepth) {
-            depth++;
-            return segmentLength(curve, start, mid, startPoint, endPoint, error, minDepth, depth) +
-                    segmentLength(curve, mid, end, startPoint, endPoint, error, minDepth, depth);
+        if ((length2 - length > error) || (depth < minDepth)) {
+            depth += 1;
+            return segmentLength(curve, start, mid, startPoint, midPoint, error, minDepth, depth) +
+                    segmentLength(curve, mid, end, midPoint, endPoint, error, minDepth, depth);
         }
         return length2;
     }

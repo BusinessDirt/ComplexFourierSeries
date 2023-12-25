@@ -2,13 +2,8 @@ package dp1key.cfs.svg.parser;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class XMLHandlerTest {
 

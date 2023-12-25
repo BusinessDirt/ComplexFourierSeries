@@ -69,7 +69,7 @@ public class Path {
     }
 
     private void calcLengths(double error, int minDepth) {
-        if (this.length == EMPTY_VALUE) return;
+        if (this.length != EMPTY_VALUE) return;
 
         double[] lengths = this.segments.stream().mapToDouble(SVGElement::length).toArray();
         this.length = Arrays.stream(lengths).sum();
@@ -90,8 +90,12 @@ public class Path {
         this.calcLengths(ERROR, MIN_DEPTH);
         int i = Bisect.bisect_right(this.fractions.stream().mapToDouble(e -> e).toArray(), pos);
 
-        if (i == 0) return this.segments.get(i).point(pos / this.fractions.get(0));
-        double segmentPos = (pos - this.fractions.get(i - 1) / (this.fractions.get(i) - this.fractions.get(i - 1)));
+        if (i == 0) {
+            double segmentPos = pos / this.fractions.get(0);
+            return this.segments.get(i).point(segmentPos);
+        }
+
+        double segmentPos = (pos - this.fractions.get(i - 1)) / (this.fractions.get(i) - this.fractions.get(i - 1));
         return this.segments.get(i).point(segmentPos);
     }
 
