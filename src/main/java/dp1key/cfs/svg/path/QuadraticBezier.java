@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class QuadraticBezier extends SVGElement implements Curve {
 
-    private ComplexNumber control;
+    private final ComplexNumber control;
 
     public QuadraticBezier(ComplexNumber start, ComplexNumber control, ComplexNumber end) {
         super(start, end);
@@ -50,16 +50,12 @@ public class QuadraticBezier extends SVGElement implements Curve {
 
     @Override
     public String toString() {
-        return "QuadraticBezier(" +
-                "start=" + start +
-                ", control=" + control +
-                ", end=" + end +
-                ')';
+        return String.format("QuadraticBezier(start=%s, control=%s, end=%s)", this.getStart(), this.getControl(), this.getEnd());
     }
 
     @Override
     public boolean isSmoothFrom(SVGElement previous) {
-        if (previous instanceof QuadraticBezier p) return this.start.equals(p.getEnd()) &&
+        if (previous instanceof QuadraticBezier p) return this.getStart().equals(p.getEnd()) &&
                 ComplexNumber.subtract(this.getControl(), this.getStart()).equals(ComplexNumber.subtract(p.getEnd(), p.getControl()));
         return this.getControl().equals(this.getStart());
     }
@@ -69,14 +65,11 @@ public class QuadraticBezier extends SVGElement implements Curve {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuadraticBezier that = (QuadraticBezier) o;
-        return Objects.equals(start, that.start) && Objects.equals(control, that.control)  && Objects.equals(end, that.end);
+        return Objects.equals(this.getStart(), that.getStart()) && Objects.equals(this.getControl(), that.getControl())
+                && Objects.equals(this.getEnd(), that.getEnd());
     }
 
     public ComplexNumber getControl() {
         return this.control;
-    }
-
-    public void setControl(ComplexNumber control) {
-        this.control = control;
     }
 }

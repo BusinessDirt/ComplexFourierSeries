@@ -10,9 +10,7 @@ public class Move extends SVGElement {
 
     @Override
     public String toString() {
-        return "Move(" +
-                "to=" + start +
-                ')';
+        return String.format("Move(to=%s)", this.getStart());
     }
 
     @Override

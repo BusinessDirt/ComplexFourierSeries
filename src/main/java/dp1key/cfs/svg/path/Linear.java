@@ -12,13 +12,13 @@ public class Linear extends SVGElement {
 
     @Override
     public ComplexNumber point(double pos) {
-        ComplexNumber distance = ComplexNumber.subtract(this.end, this.start);
-        return ComplexNumber.add(this.start, ComplexNumber.multiply(distance, pos));
+        ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
+        return ComplexNumber.add(this.getStart(), ComplexNumber.multiply(distance, pos));
     }
 
     @Override
     public double length() {
-        ComplexNumber distance = ComplexNumber.subtract(this.end, this.start);
+        ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
         return distance.mod();
     }
 

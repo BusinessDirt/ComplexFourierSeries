@@ -4,10 +4,7 @@ import dp1key.cfs.svg.ComplexNumber;
 import dp1key.cfs.svg.parser.Parser;
 import dp1key.cfs.svg.parser.XMLHandler;
 import dp1key.cfs.svg.path.Path;
-import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class GuiTest {
 

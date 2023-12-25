@@ -10,9 +10,6 @@ public class Close extends Linear {
 
     @Override
     public String toString() {
-        return "Close(" +
-                "start=" + start +
-                ", end=" + end +
-                ')';
+        return String.format("Close(start=%s, end=%s)", this.getStart(), this.getEnd());
     }
 }

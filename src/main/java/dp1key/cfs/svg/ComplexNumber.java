@@ -1,7 +1,6 @@
 package dp1key.cfs.svg;
 
-import java.util.Objects;
-
+@SuppressWarnings({"unused"})
 public class ComplexNumber {
 
     public static final int XY = 0;

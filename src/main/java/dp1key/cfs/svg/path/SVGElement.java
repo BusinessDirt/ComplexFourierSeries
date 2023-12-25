@@ -21,15 +21,7 @@ public abstract class SVGElement{
         return start;
     }
 
-    public void setStart(ComplexNumber start) {
-        this.start = start;
-    }
-
     public ComplexNumber getEnd() {
         return end;
-    }
-
-    public void setEnd(ComplexNumber end) {
-        this.end = end;
     }
 }

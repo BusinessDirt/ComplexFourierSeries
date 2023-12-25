@@ -10,53 +10,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 // TODO
-public class Path {
+@SuppressWarnings("unused")
+public class Path extends LinkedList<SVGElement> {
 
-    private final LinkedList<SVGElement> segments;
     private final LinkedList<Double> fractions;
     private List<Double> lengths;
     private double length;
     private final double EMPTY_VALUE = -1.0;
-    private final int MIN_DEPTH = 5;
-    private final double ERROR = 1e-12;
 
     public Path() {
         this(new LinkedList<>());
     }
 
-    public Path(SVGElement[] segments) {
-        this((LinkedList<SVGElement>) List.of(segments));
-    }
-
     public Path(LinkedList<SVGElement> segments) {
-        this.segments = segments;
+        this.addAll(segments);
         this.fractions = new LinkedList<>();
         this.lengths = new LinkedList<>();
         this.length = EMPTY_VALUE;
-    }
-
-    public boolean add(SVGElement element) {
-        return this.segments.add(element);
-    }
-
-    public SVGElement getItem(int index) {
-        return this.segments.get(index);
-    }
-
-    public SVGElement getLast() {
-        return this.segments.getLast();
-    }
-
-    public void setItem(int index, SVGElement value) {
-        this.segments.set(index, value);
-    }
-
-    public void delItem(int index) {
-        this.segments.remove(index);
-    }
-
-    public void insert(int index, SVGElement value) {
-        this.segments.add(index, value);
     }
 
     public void reverse() {
@@ -64,16 +34,16 @@ public class Path {
     }
 
     public double length() {
-        this.calcLengths(ERROR, MIN_DEPTH);
+        this.calcLengths();
         return this.length;
     }
 
-    private void calcLengths(double error, int minDepth) {
+    private void calcLengths() {
         if (this.length != EMPTY_VALUE) return;
 
-        double[] lengths = this.segments.stream().mapToDouble(SVGElement::length).toArray();
+        double[] lengths = this.stream().mapToDouble(SVGElement::length).toArray();
         this.length = Arrays.stream(lengths).sum();
-        this.lengths = Arrays.stream(lengths).mapToObj(len -> len = len / this.length).toList();
+        this.lengths = Arrays.stream(lengths).mapToObj(len -> len / this.length).toList();
 
         // fractional distance to use in point()
         double fraction = 0;
@@ -84,31 +54,32 @@ public class Path {
     }
 
     public ComplexNumber point(double pos) {
-        if (pos == 0.0) return this.segments.getFirst().point(pos);
-        if (pos == 1.0) return this.segments.getLast().point(pos);
+        if (pos == 0.0) return this.getFirst().point(pos);
+        if (pos == 1.0) return this.getLast().point(pos);
 
-        this.calcLengths(ERROR, MIN_DEPTH);
+        this.calcLengths();
         int i = Bisect.bisect_right(this.fractions.stream().mapToDouble(e -> e).toArray(), pos);
 
         if (i == 0) {
             double segmentPos = pos / this.fractions.get(0);
-            return this.segments.get(i).point(segmentPos);
+            return this.get(i).point(segmentPos);
         }
 
         double segmentPos = (pos - this.fractions.get(i - 1)) / (this.fractions.get(i) - this.fractions.get(i - 1));
-        return this.segments.get(i).point(segmentPos);
+        return this.get(i).point(segmentPos);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Path path = (Path) o;
-        return Objects.equals(segments, path.segments) && Objects.equals(fractions, path.fractions);
+        if (!super.equals(o)) return false;
+        Path that = (Path) o;
+        return Double.compare(length, that.length) == 0 && Objects.equals(fractions, that.fractions) && Objects.equals(lengths, that.lengths);
     }
 
     @Override
     public String toString() {
-        return segments.stream().map(Object::toString).collect(Collectors.joining(", ", "Path(", ")"));
+        return this.stream().map(Object::toString).collect(Collectors.joining(", ", "Path(", ")"));
     }
 }

@@ -6,8 +6,7 @@ import java.util.Objects;
 
 public class CubicBezier extends SVGElement implements Curve {
 
-    private final ComplexNumber control1;
-    private final ComplexNumber control2;
+    private final ComplexNumber control1, control2;
 
     public CubicBezier(ComplexNumber start, ComplexNumber control1, ComplexNumber control2, ComplexNumber end) {
         super(start, end);
@@ -17,7 +16,7 @@ public class CubicBezier extends SVGElement implements Curve {
 
     @Override
     public boolean isSmoothFrom(SVGElement previous) {
-        if (previous instanceof CubicBezier p) return this.start.equals(p.getEnd()) &&
+        if (previous instanceof CubicBezier p) return this.getStart().equals(p.getEnd()) &&
                 ComplexNumber.subtract(this.getControl1(), this.getControl2()).equals(ComplexNumber.subtract(p.getEnd(), p.getControl2()));
         return this.getControl1().equals(this.getStart());
     }
@@ -57,7 +56,8 @@ public class CubicBezier extends SVGElement implements Curve {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CubicBezier that = (CubicBezier) o;
-        return Objects.equals(start, that.start) && Objects.equals(control1, that.control1) && Objects.equals(control2, that.control2) && Objects.equals(end, that.end);
+        return Objects.equals(this.getStart(), that.getStart()) && Objects.equals(this.getControl1(), that.getControl1())
+                && Objects.equals(this.getControl2(), that.getControl2()) && Objects.equals(this.getEnd(), that.getEnd());
     }
 
     public ComplexNumber getControl1() {

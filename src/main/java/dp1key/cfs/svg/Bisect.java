@@ -1,46 +1,37 @@
 package dp1key.cfs.svg;
 
 public class Bisect {
-    public static int bisect_right(double[] A, double x) {
-        return bisect_right(A, x, 0, A.length);
+    public static int bisect_right(double[] array, double x) {
+        return bisect_right(array, x, 0, array.length);
     }
 
-    public static int bisect_right(double[] A, double x, int lo, int hi) {
-        int N = A.length;
-        if (N == 0) return 0;
-        if (x < A[lo]) return lo;
-        if (x > A[hi - 1]) return hi;
+    public static int bisect_right(double[] array, double x, int low, int high) {
+        if (array.length == 0) return 0;
+        if (x < array[low]) return low;
+        if (x > array[high - 1]) return high;
 
-        for (;;) {
-            if (lo + 1 == hi) return lo + 1;
-
-            int mi = (hi + lo) / 2;
-            if (x < A[mi]) {
-                hi = mi;
-            } else {
-                lo = mi;
-            }
+        while (true) {
+            if (low + 1 == high) return low + 1;
+            int mid = (high + low) / 2;
+            if (x < array[mid]) high = mid;
+            else low = mid;
         }
     }
 
-    public static int bisect_left(double[] A, double x) {
-        return bisect_left(A, x, 0, A.length);
+    public static int bisect_left(double[] array, double x) {
+        return bisect_left(array, x, 0, array.length);
     }
 
-    public static int bisect_left(double[] A, double x, int lo, int hi) {
-        int N = A.length;
-        if (N == 0) return 0;
-        if (x < A[lo]) return lo;
-        if (x > A[hi - 1]) return hi;
+    public static int bisect_left(double[] array, double x, int low, int high) {
+        if (array.length == 0) return 0;
+        if (x < array[low]) return low;
+        if (x > array[high - 1]) return high;
 
-        for (;;) {
-            if (lo + 1 == hi) return x == A[lo] ? lo : (lo + 1);
-            int mi = (hi + lo) / 2;
-            if (x <= A[mi]) {
-                hi = mi;
-            } else {
-                lo = mi;
-            }
+        while (true) {
+            if (low + 1 == high) return x == array[low] ? low : (low + 1);
+            int mid = (high + low) / 2;
+            if (x <= array[mid]) high = mid;
+            else low = mid;
         }
     }
 }
