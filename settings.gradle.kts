@@ -1,2 +1,2 @@
-rootProject.name = "ComplexFourierSeries"
+rootProject.name = "svgHandler"
 

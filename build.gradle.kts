@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "dp1key.cfs"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-beta1"
 
 repositories {
     mavenCentral()

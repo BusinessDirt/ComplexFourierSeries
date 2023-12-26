@@ -13,7 +13,7 @@ public class GuiTest {
         Gui window = new Gui();
         window.setDrawLines(true);
 
-        Document doc = XMLHandler.getDocumentFromFile("twitter.svg");
+        Document doc = XMLHandler.getDocumentFromFile("src/test/resources/twitter.svg");
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
         Path[] parsed = Parser.parsePaths(paths);
 

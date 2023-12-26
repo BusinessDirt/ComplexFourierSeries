@@ -9,14 +9,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class XMLHandler {
 
     public static Document getDocumentFromFile(String path) {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(new File("src/main/resources/" + path));
+            Document doc = builder.parse(new File(path));
             doc.getDocumentElement().normalize();
             return doc;
         } catch (ParserConfigurationException | IOException | SAXException e) {
