@@ -1,4 +1,4 @@
-package dp1key.cfs.svg;
+package businessdirt.svgHandler.svg;
 
 import org.junit.jupiter.api.Test;
 

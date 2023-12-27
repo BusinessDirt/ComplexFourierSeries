@@ -1,9 +1,9 @@
-package dp1key.cfs;
+package businessdirt.svgHandler;
 
-import dp1key.cfs.svg.ComplexNumber;
-import dp1key.cfs.svg.parser.Parser;
-import dp1key.cfs.svg.parser.XMLHandler;
-import dp1key.cfs.svg.path.Path;
+import businessdirt.svgHandler.svg.ComplexNumber;
+import businessdirt.svgHandler.svg.parser.Parser;
+import businessdirt.svgHandler.svg.parser.XMLHandler;
+import businessdirt.svgHandler.svg.path.Path;
 import org.w3c.dom.Document;
 
 public class GuiTest {

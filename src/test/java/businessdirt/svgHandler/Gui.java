@@ -1,6 +1,6 @@
-package dp1key.cfs;
+package businessdirt.svgHandler;
 
-import dp1key.cfs.svg.ComplexNumber;
+import businessdirt.svgHandler.svg.ComplexNumber;
 
 import javax.swing.*;
 import java.awt.*;

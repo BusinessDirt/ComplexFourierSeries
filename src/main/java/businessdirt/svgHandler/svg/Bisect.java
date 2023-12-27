@@ -1,4 +1,4 @@
-package dp1key.cfs.svg;
+package businessdirt.svgHandler.svg;
 
 public class Bisect {
     public static int bisect_right(double[] array, double x) {

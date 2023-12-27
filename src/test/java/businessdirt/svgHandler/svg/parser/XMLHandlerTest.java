@@ -1,4 +1,4 @@
-package dp1key.cfs.svg.parser;
+package businessdirt.svgHandler.svg.parser;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;

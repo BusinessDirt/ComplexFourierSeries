@@ -1,7 +1,7 @@
-package dp1key.cfs.svg.parser;
+package businessdirt.svgHandler.svg.parser;
 
-import dp1key.cfs.svg.ComplexNumber;
-import dp1key.cfs.svg.path.*;
+import businessdirt.svgHandler.svg.ComplexNumber;
+import businessdirt.svgHandler.svg.path.*;
 
 import java.util.ArrayList;
 import java.util.List;
