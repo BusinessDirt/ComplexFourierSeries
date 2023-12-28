@@ -29,8 +29,8 @@ public class Gui {
         jf.setVisible(true);
     }
 
-    public void drawComplexNumber(ComplexNumber z) {
-        this.draw.drawComplexNumber(z);
+    public void drawFigure(Draw.Figure f) {
+        this.draw.drawFigure(f);
     }
 
     public void setDrawLines(boolean drawLines) {

@@ -134,6 +134,12 @@ public class Arc extends SVGElement implements Curve {
     }
 
     @Override
+    public void reverse() {
+        super.reverse();
+        this.parametrize();
+    }
+
+    @Override
     public String toString() {
         return String.format("Arc(start=%s, radius=%s, rotation=%s, arc=%s, sweep=%s, end=%s)",
                 this.getStart(), this.getRadius(), this.getRotation(), this.isArc(), this.isSweep(), this.getEnd());

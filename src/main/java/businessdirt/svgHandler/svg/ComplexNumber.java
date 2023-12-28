@@ -199,6 +199,11 @@ public class ComplexNumber {
         return Double.compare(getReal(), that.getReal()) == 0 && Double.compare(getImaginary(), that.getImaginary()) == 0;
     }
 
+    @Override
+    public ComplexNumber clone() {
+        return new ComplexNumber(this.getReal(), this.getImaginary());
+    }
+
     public String format(int formatId) throws IllegalArgumentException {
         if(formatId == XY) return this.toString();
         if(formatId == RCIS) return this.mod() + " cis(" + this.getArg() + ")";

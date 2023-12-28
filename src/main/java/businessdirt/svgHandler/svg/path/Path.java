@@ -2,11 +2,9 @@ package businessdirt.svgHandler.svg.path;
 
 import businessdirt.svgHandler.svg.Bisect;
 import businessdirt.svgHandler.svg.ComplexNumber;
+import jdk.jshell.spi.ExecutionControl;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // TODO
@@ -30,7 +28,16 @@ public class Path extends LinkedList<SVGElement> {
     }
 
     public void reverse() {
-        // TODO
+        // reverse lists
+        Collections.reverse(this);
+        Collections.reverse(fractions);
+        List<Double> _lengths = new LinkedList<>();
+        Collections.addAll(_lengths, this.lengths.toArray(new Double[0]));
+        Collections.reverse(_lengths);
+        this.lengths = _lengths;
+
+        // reverse all the elements
+        for (SVGElement element : this) element.reverse();
     }
 
     public double length() {

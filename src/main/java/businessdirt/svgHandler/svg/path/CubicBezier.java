@@ -60,6 +60,14 @@ public class CubicBezier extends SVGElement implements Curve {
                 && Objects.equals(this.getControl2(), that.getControl2()) && Objects.equals(this.getEnd(), that.getEnd());
     }
 
+    @Override
+    public void reverse() {
+        super.reverse();
+        ComplexNumber _control1 = this.control1.clone();
+        this.control1.set(this.control2.clone());
+        this.control2.set(_control1);
+    }
+
     public ComplexNumber getControl1() {
         return this.control1;
     }

@@ -13,6 +13,12 @@ public abstract class SVGElement{
         this.end = end;
     }
 
+    public void reverse() {
+        ComplexNumber _start = this.start.clone();
+        this.start.set(this.end.clone());
+        this.end.set( _start);
+    }
+
     public abstract ComplexNumber point(double pos);
 
     public abstract double length();

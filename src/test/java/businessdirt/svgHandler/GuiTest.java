@@ -18,15 +18,26 @@ public class GuiTest {
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
         Parser[] parser = Parser.parsePaths(paths);
 
-        // generated n points on the path and draw them
-        ComplexNumber offset = new ComplexNumber(0.0, 0.0);
+        // normal
+        ComplexNumber offset = new ComplexNumber(000.0, 0.0);
         drawFigure(parser[0], 50, offset);
+
+        System.out.println("---------------------");
+
+        // reversed
+        ComplexNumber offset2 = new ComplexNumber(200.0, 0.0);
+        Parser reversed = parser[0].clone();
+        reversed.path().reverse();
+        drawFigure(reversed, 50, offset2);
     }
 
     private static void drawFigure(Parser parser, int n, ComplexNumber offset) {
+        Draw.Figure figure = new Draw.Figure();
         for (int i = 0; i < n; i++) {
             ComplexNumber point = parser.path().point(i / (double) n);
-            window.drawComplexNumber(ComplexNumber.add(point, offset));
+            System.out.println(point);
+            figure.add(ComplexNumber.add(point, offset));
         }
+        window.drawFigure(figure);
     }
 }
