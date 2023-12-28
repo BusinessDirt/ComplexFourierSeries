@@ -95,7 +95,7 @@ public class Arc extends SVGElement implements Curve {
 
     @Override
     public ComplexNumber point(double pos) {
-        if (this.getStart() == this.getEnd()) return this.getStart();
+        if (this.getStart().equals(this.getEnd())) return this.getStart();
         if (this.getRadius().getReal() == 0 || this.getRadius().getImaginary() == 0) {
             ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
             return ComplexNumber.add(this.getStart(), ComplexNumber.multiply(distance, pos));
@@ -125,14 +125,12 @@ public class Arc extends SVGElement implements Curve {
         }
 
         if (this.getRadius().getReal() == this.getRadius().getImaginary()) {
-            // arc is a circle
+            // circle
             double radius = this.getRadius().getReal() * this.getRadiusScale();
             return Math.abs(radius * this.delta * Math.PI / 180);
         }
 
-        ComplexNumber startPoint = this.point(0);
-        ComplexNumber endPoint = this.point(1);
-        return segmentLength(this, 0, 1, startPoint, endPoint, ERROR, MIN_DEPTH, 0);
+        return this.segmentLength(this, 0.0, 1.0, this.point(0.0), this.point(1.0), ERROR, MIN_DEPTH, 0);
     }
 
     @Override

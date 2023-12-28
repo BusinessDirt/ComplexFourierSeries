@@ -3,8 +3,8 @@ plugins {
     id("maven-publish")
 }
 
-group = "businessdirt.svgHandler"
-version = "1.0.0"
+group = "businessdirt.svghandler"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
