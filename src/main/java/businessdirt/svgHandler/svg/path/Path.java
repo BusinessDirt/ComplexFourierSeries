@@ -2,17 +2,16 @@ package businessdirt.svgHandler.svg.path;
 
 import businessdirt.svgHandler.svg.Bisect;
 import businessdirt.svgHandler.svg.ComplexNumber;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-// TODO
 @SuppressWarnings("unused")
 public class Path extends LinkedList<SVGElement> {
 
     private final LinkedList<Double> fractions;
-    private List<Double> lengths;
+    private LinkedList<Double> lengths;
     private double length;
     private final double EMPTY_VALUE = -1.0;
 
@@ -27,17 +26,32 @@ public class Path extends LinkedList<SVGElement> {
         this.length = EMPTY_VALUE;
     }
 
-    public void reverse() {
-        // reverse lists
-        Collections.reverse(this);
-        Collections.reverse(fractions);
-        List<Double> _lengths = new LinkedList<>();
-        Collections.addAll(_lengths, this.lengths.toArray(new Double[0]));
-        Collections.reverse(_lengths);
-        this.lengths = _lengths;
+    private Path(LinkedList<SVGElement> segments, LinkedList<Double> fractions, LinkedList<Double> lengths, double length) {
+        this.addAll(segments);
 
+        this.fractions = new LinkedList<>();
+        this.fractions.addAll(fractions.subList(0, fractions.size()));
+
+        this.lengths = new LinkedList<>();
+        this.lengths.addAll(lengths.subList(0, lengths.size()));
+
+        this.length = length;
+    }
+
+    public void reverse() {
         // reverse all the elements
         for (SVGElement element : this) element.reverse();
+
+        // reverse lists
+        Collections.reverse(this);
+        Collections.reverse(this.fractions);
+        Collections.reverse(this.lengths);
+
+        // swap move and close
+        Move _move = new Move(this.getFirst().getStart());
+        Close _close = new Close(this.getLast().getStart(), this.getLast().getEnd());
+        this.set(0, _move);
+        this.set(this.size() - 1, _close);
     }
 
     public double length() {
@@ -50,7 +64,7 @@ public class Path extends LinkedList<SVGElement> {
 
         double[] lengths = this.stream().mapToDouble(SVGElement::length).toArray();
         this.length = Arrays.stream(lengths).sum();
-        this.lengths = Arrays.stream(lengths).mapToObj(len -> len / this.length).toList();
+        this.lengths = Arrays.stream(lengths).mapToObj(len -> len / this.length).collect(Collectors.toCollection(LinkedList::new));
 
         // fractional distance to use in point()
         double fraction = 0;
@@ -88,5 +102,10 @@ public class Path extends LinkedList<SVGElement> {
     @Override
     public String toString() {
         return this.stream().map(Object::toString).collect(Collectors.joining(", ", "Path(", ")"));
+    }
+
+    @Override
+    public Path clone() {
+        return new Path(this, this.fractions, this.lengths, this.length);
     }
 }

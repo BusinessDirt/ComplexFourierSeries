@@ -4,7 +4,7 @@ import businessdirt.svgHandler.svg.ComplexNumber;
 
 import java.util.Objects;
 
-public class CubicBezier extends SVGElement implements Curve {
+public class CubicBezier extends SVGElement implements SegmentLength {
 
     private final ComplexNumber control1, control2;
 
@@ -14,7 +14,6 @@ public class CubicBezier extends SVGElement implements Curve {
         this.control2 = control2;
     }
 
-    @Override
     public boolean isSmoothFrom(SVGElement previous) {
         if (previous instanceof CubicBezier p) return this.getStart().equals(p.getEnd()) &&
                 ComplexNumber.subtract(this.getControl1(), this.getControl2()).equals(ComplexNumber.subtract(p.getEnd(), p.getControl2()));
@@ -42,7 +41,7 @@ public class CubicBezier extends SVGElement implements Curve {
     public double length() {
         ComplexNumber startPoint = this.point(0);
         ComplexNumber endPoint = this.point(1);
-        return segmentLength(this, 0, 1, startPoint, endPoint, ERROR, MIN_DEPTH, 0);
+        return segmentLength(this, 0, 1, startPoint, endPoint, 0);
     }
 
     @Override

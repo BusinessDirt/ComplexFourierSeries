@@ -4,7 +4,7 @@ import businessdirt.svgHandler.svg.ComplexNumber;
 
 import java.util.Objects;
 
-public class Arc extends SVGElement implements Curve {
+public class Arc extends SVGElement implements SegmentLength {
 
     private final ComplexNumber radius;
     private ComplexNumber center;
@@ -130,7 +130,7 @@ public class Arc extends SVGElement implements Curve {
             return Math.abs(radius * this.delta * Math.PI / 180);
         }
 
-        return this.segmentLength(this, 0.0, 1.0, this.point(0.0), this.point(1.0), ERROR, MIN_DEPTH, 0);
+        return this.segmentLength(this, 0.0, 1.0, this.point(0.0), this.point(1.0), 0);
     }
 
     @Override
