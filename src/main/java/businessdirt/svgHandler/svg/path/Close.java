@@ -1,10 +1,10 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 public class Close extends Linear {
 
-    public Close(ComplexNumber start, ComplexNumber end) {
+    public Close(Complex start, Complex end) {
         super(start, end);
     }
 

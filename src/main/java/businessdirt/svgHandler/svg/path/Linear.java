@@ -1,25 +1,25 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 import java.util.Objects;
 
 public class Linear extends SVGElement {
 
-    public Linear(ComplexNumber start, ComplexNumber end) {
+    public Linear(Complex start, Complex end) {
         super(start, end);
     }
 
     @Override
-    public ComplexNumber point(double pos) {
-        ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
-        return ComplexNumber.add(this.getStart(), ComplexNumber.multiply(distance, pos));
+    public Complex point(double pos) {
+        Complex distance = this.getEnd().subtract(this.getStart());
+        return this.getStart().add(distance.multiply(pos));
     }
 
     @Override
     public double length() {
-        ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
-        return distance.mod();
+        Complex distance = this.getEnd().subtract(this.getStart());
+        return distance.abs();
     }
 
     @Override

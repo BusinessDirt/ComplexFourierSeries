@@ -15,6 +15,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     implementation("xerces:xercesImpl:2.12.2")
+    implementation("com.github.vmicelli:jcomplex:1.0")
+
 }
 
 publishing {

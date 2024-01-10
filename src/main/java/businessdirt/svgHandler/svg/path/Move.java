@@ -1,10 +1,10 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 public class Move extends SVGElement {
 
-    public Move(ComplexNumber to) {
+    public Move(Complex to) {
         super(to, to);
     }
 
@@ -14,7 +14,7 @@ public class Move extends SVGElement {
     }
 
     @Override
-    public ComplexNumber point(double pos) {
+    public Complex point(double pos) {
         return this.getStart();
     }
 

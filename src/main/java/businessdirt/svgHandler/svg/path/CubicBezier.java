@@ -1,14 +1,14 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 import java.util.Objects;
 
 public class CubicBezier extends SVGElement implements SegmentLength {
 
-    private final ComplexNumber control1, control2;
+    private Complex control1, control2;
 
-    public CubicBezier(ComplexNumber start, ComplexNumber control1, ComplexNumber control2, ComplexNumber end) {
+    public CubicBezier(Complex start, Complex control1, Complex control2, Complex end) {
         super(start, end);
         this.control1 = control1;
         this.control2 = control2;
@@ -16,31 +16,31 @@ public class CubicBezier extends SVGElement implements SegmentLength {
 
     public boolean isSmoothFrom(SVGElement previous) {
         if (previous instanceof CubicBezier p) return this.getStart().equals(p.getEnd()) &&
-                ComplexNumber.subtract(this.getControl1(), this.getControl2()).equals(ComplexNumber.subtract(p.getEnd(), p.getControl2()));
+                this.getControl1().subtract(this.getControl2()).equals(this.getEnd().subtract(p.getControl2()));
         return this.getControl1().equals(this.getStart());
     }
 
     @Override
-    public ComplexNumber point(double pos) {
+    public Complex point(double pos) {
         // (1 - pos)^3 * this.getStart()
-        ComplexNumber a = ComplexNumber.multiply(this.getStart(), Math.pow(1 - pos, 3));
+        Complex a = this.getStart().multiply(Math.pow(1 - pos, 3));
 
         // 3 * (1 - pos)^2 * pos * this.getControl1()
-        ComplexNumber b = ComplexNumber.multiply(this.getControl1(), 3 * Math.pow(1 - pos, 2) * pos);
+        Complex b = this.getControl1().multiply(3 * Math.pow(1 - pos, 2) * pos);
 
         // 3 * (1 - pos) * pos^2 * this.getControl2()
-        ComplexNumber c = ComplexNumber.multiply(this.getControl2(), 3 * (1 - pos) * Math.pow(pos, 2));
+        Complex c = this.getControl2().multiply(3 * (1 - pos) * Math.pow(pos, 2));
 
         // pos^3 * this.getEnd()
-        ComplexNumber d = ComplexNumber.multiply(this.getEnd(), Math.pow(pos, 3));
+        Complex d = this.getEnd().multiply(Math.pow(pos, 3));
 
-        return ComplexNumber.add(ComplexNumber.add(a, b), ComplexNumber.add(c, d));
+        return a.add(b).add(c).add(d);
     }
 
     @Override
     public double length() {
-        ComplexNumber startPoint = this.point(0);
-        ComplexNumber endPoint = this.point(1);
+        Complex startPoint = this.point(0);
+        Complex endPoint = this.point(1);
         return segmentLength(this, 0, 1, startPoint, endPoint, 0);
     }
 
@@ -62,16 +62,16 @@ public class CubicBezier extends SVGElement implements SegmentLength {
     @Override
     public void reverse() {
         super.reverse();
-        ComplexNumber _control1 = this.control1.clone();
-        this.control1.set(this.control2.clone());
-        this.control2.set(_control1);
+        Complex _control1 = new Complex(this.getControl1().getReal(), this.getControl1().getImaginary());
+        this.control1 = new Complex(this.getControl2().getReal(), this.getControl2().getImaginary());
+        this.control2 = _control1;
     }
 
-    public ComplexNumber getControl1() {
+    public Complex getControl1() {
         return this.control1;
     }
 
-    public ComplexNumber getControl2() {
+    public Complex getControl2() {
         return this.control2;
     }
 }

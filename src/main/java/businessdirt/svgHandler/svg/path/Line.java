@@ -1,10 +1,10 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 public class Line extends Linear {
 
-    public Line(ComplexNumber start, ComplexNumber end) {
+    public Line(Complex start, Complex end) {
         super(start, end);
     }
 

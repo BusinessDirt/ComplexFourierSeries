@@ -1,7 +1,5 @@
 package businessdirt.svgHandler;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
-
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,6 +1,6 @@
 package businessdirt.svgHandler;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,13 +43,13 @@ public class Draw extends JLabel {
 
     public static class Figure {
 
-        private final List<ComplexNumber> points;
+        private final List<Complex> points;
 
         public Figure() {
             this.points = new LinkedList<>();
         }
 
-        public void add(ComplexNumber z) {
+        public void add(Complex z) {
             this.points.add(z);
         }
 
@@ -71,8 +71,8 @@ public class Draw extends JLabel {
         }
 
         private void drawLinesHelper(Graphics2D g2d, int i1, int i2) {
-            ComplexNumber z1 = this.points.get(i1);
-            ComplexNumber z2 = this.points.get(i2);
+            Complex z1 = this.points.get(i1);
+            Complex z2 = this.points.get(i2);
             g2d.drawLine((int) z1.getReal(), (int) z1.getImaginary(), (int) z2.getReal(), (int) z2.getImaginary());
         }
     }

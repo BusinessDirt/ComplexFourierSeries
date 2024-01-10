@@ -1,31 +1,31 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 public abstract class SVGElement{
 
-    protected ComplexNumber start, end;
+    protected Complex start, end;
 
-    public SVGElement(ComplexNumber start, ComplexNumber end) {
+    public SVGElement(Complex start, Complex end) {
         this.start = start;
         this.end = end;
     }
 
     public void reverse() {
-        ComplexNumber _start = this.start.clone();
-        this.start.set(this.end.clone());
-        this.end.set( _start);
+        Complex _start = new Complex(this.start.getReal(), this.start.getImaginary());
+        this.start = new Complex(this.end.getReal(), this.end.getImaginary());
+        this.end = _start;
     }
 
-    public abstract ComplexNumber point(double pos);
+    public abstract Complex point(double pos);
 
     public abstract double length();
 
-    public ComplexNumber getStart() {
+    public Complex getStart() {
         return start;
     }
 
-    public ComplexNumber getEnd() {
+    public Complex getEnd() {
         return end;
     }
 }

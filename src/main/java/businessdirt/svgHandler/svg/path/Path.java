@@ -1,10 +1,12 @@
 package businessdirt.svgHandler.svg.path;
 
 import businessdirt.svgHandler.svg.Bisect;
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -74,7 +76,7 @@ public class Path extends LinkedList<SVGElement> {
         }
     }
 
-    public ComplexNumber point(double pos) {
+    public Complex point(double pos) {
         if (pos == 0.0) return this.getFirst().point(pos);
         if (pos == 1.0) return this.getLast().point(pos);
 

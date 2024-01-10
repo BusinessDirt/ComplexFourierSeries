@@ -1,13 +1,13 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 import java.util.Objects;
 
 public class Arc extends SVGElement implements SegmentLength {
 
-    private final ComplexNumber radius;
-    private ComplexNumber center;
+    private final Complex radius;
+    private Complex center;
     private final boolean arc;
     private final boolean sweep;
     private final double rotation;
@@ -15,7 +15,7 @@ public class Arc extends SVGElement implements SegmentLength {
     private double theta;
     private double delta;
 
-    public Arc(ComplexNumber start, ComplexNumber radius, double rotation, boolean arc, boolean sweep, ComplexNumber end) {
+    public Arc(Complex start, Complex radius, double rotation, boolean arc, boolean sweep, Complex end) {
         super(start, end);
         this.radius = radius;
         this.rotation = rotation;
@@ -65,7 +65,7 @@ public class Arc extends SVGElement implements SegmentLength {
         if (this.isArc() == this.isSweep()) c = -c;
         double cxprim = c * rx * y1prim / ry;
         double cyprim = -c * ry * x1prim / rx;
-        this.setCenter(new ComplexNumber(
+        this.setCenter(new Complex(
                 (cosr * cxprim - sinr * cyprim) + ((this.getStart().getReal() + this.getEnd().getReal()) / 2),
                 (sinr * cxprim + cosr * cyprim) + ((this.getStart().getImaginary() + this.getEnd().getImaginary()) / 2)
         ));
@@ -94,17 +94,17 @@ public class Arc extends SVGElement implements SegmentLength {
     }
 
     @Override
-    public ComplexNumber point(double pos) {
+    public Complex point(double pos) {
         if (this.getStart().equals(this.getEnd())) return this.getStart();
         if (this.getRadius().getReal() == 0 || this.getRadius().getImaginary() == 0) {
-            ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
-            return ComplexNumber.add(this.getStart(), ComplexNumber.multiply(distance, pos));
+            Complex distance = this.getEnd().subtract(this.getStart());
+            return this.getStart().add(distance.multiply(pos));
         }
 
         double angle = Math.toRadians(this.getTheta() + (this.getDelta() * pos));
         double cosr = Math.cos(Math.toRadians(this.getRotation()));
         double sinr = Math.sin(Math.toRadians(this.getRotation()));
-        ComplexNumber radius = ComplexNumber.multiply(this.getRadius(), this.getRadiusScale());
+        Complex radius = this.getRadius().multiply(this.getRadiusScale());
 
         double x = cosr * Math.cos(angle) * radius.getReal()
                 - sinr * Math.sin(angle) * radius.getImaginary()
@@ -112,7 +112,7 @@ public class Arc extends SVGElement implements SegmentLength {
         double y = sinr * Math.cos(angle) * radius.getReal()
                 + cosr * Math.sin(angle) * radius.getImaginary()
                 + this.getCenter().getImaginary();
-        return new ComplexNumber(x, y);
+        return new Complex(x, y);
     }
 
     @Override
@@ -120,8 +120,8 @@ public class Arc extends SVGElement implements SegmentLength {
         if (this.getStart().equals(this.getEnd())) return 0;
 
         if (this.getRadius().getReal() == 0 || this.getRadius().getImaginary() == 0) {
-            ComplexNumber distance = ComplexNumber.subtract(this.getEnd(), this.getStart());
-            return distance.mod();
+            Complex distance = this.getEnd().subtract(this.getStart());
+            return distance.abs();
         }
 
         if (this.getRadius().getReal() == this.getRadius().getImaginary()) {
@@ -153,7 +153,7 @@ public class Arc extends SVGElement implements SegmentLength {
         return getRotation() == arc1.getRotation() && isArc() == arc1.isArc() && isSweep() == arc1.isSweep() && Objects.equals(getRadius(), arc1.getRadius());
     }
 
-    public ComplexNumber getRadius() {
+    public Complex getRadius() {
         return radius;
     }
 
@@ -170,7 +170,7 @@ public class Arc extends SVGElement implements SegmentLength {
         return sweep;
     }
 
-    public ComplexNumber getCenter() {
+    public Complex getCenter() {
         return center;
     }
 
@@ -186,7 +186,7 @@ public class Arc extends SVGElement implements SegmentLength {
         return delta;
     }
 
-    public void setCenter(ComplexNumber center) {
+    public void setCenter(Complex center) {
         this.center = center;
     }
 

@@ -1,17 +1,17 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 public interface SegmentLength {
 
     double ERROR = 1e-12;
     double MIN_DEPTH = 5;
 
-    default double segmentLength(SVGElement curve, double start, double end, ComplexNumber startPoint, ComplexNumber endPoint, int depth) {
+    default double segmentLength(SVGElement curve, double start, double end, Complex startPoint, Complex endPoint, int depth) {
         double mid = (start + end) / 2;
-        ComplexNumber midPoint = curve.point(mid);
-        double length = ComplexNumber.subtract(endPoint, startPoint).mod();
-        double length2 = ComplexNumber.subtract(midPoint, startPoint).mod() + ComplexNumber.subtract(endPoint, midPoint).mod();
+        Complex midPoint = curve.point(mid);
+        double length = endPoint.subtract(startPoint).abs();
+        double length2 = midPoint.subtract(startPoint).abs() + endPoint.subtract(midPoint).abs();
 
         if ((length2 - length > ERROR) || (depth < MIN_DEPTH)) {
             depth += 1;

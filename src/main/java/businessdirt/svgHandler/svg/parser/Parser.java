@@ -1,7 +1,7 @@
 package businessdirt.svgHandler.svg.parser;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
 import businessdirt.svgHandler.svg.path.*;
+import com.vm.jcomplex.Complex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +54,8 @@ public class Parser {
     }
 
     private void parsePath() {
-        ComplexNumber pos, startPos = null, currentPos = new ComplexNumber();
-        ComplexNumber control1, control2, end;
+        Complex pos, startPos = null, currentPos = new Complex(0, 0);
+        Complex control1, control2, end;
         String command = "", lastCommand;
         boolean absolute = false;
 
@@ -77,7 +77,7 @@ public class Parser {
                 case "M":
                     // Moveto command
                     pos = this.fromTokenized();
-                    currentPos = absolute ? pos : ComplexNumber.add(currentPos, pos);
+                    currentPos = absolute ? pos : currentPos.add(pos);
                     this.segments.add(new Move(currentPos));
                     startPos = currentPos;
                     command = "L";
@@ -93,21 +93,21 @@ public class Parser {
 
                 case "L":
                     pos = this.fromTokenized();
-                    if (!absolute) pos.add(currentPos);
+                    if (!absolute) pos = pos.add(currentPos);
                     this.segments.add(new Line(currentPos, pos));
                     currentPos = pos;
                     break;
 
                 case "H":
-                    pos = new ComplexNumber(Double.parseDouble(this.tokenized.remove(0)), currentPos.getImaginary());
-                    if (!absolute) pos.add(currentPos.getReal());
+                    pos = new Complex(Double.parseDouble(this.tokenized.remove(0)), currentPos.getImaginary());
+                    if (!absolute) pos = pos.add(currentPos.getReal());
                     this.segments.add(new Line(currentPos, pos));
                     currentPos = pos;
                     break;
 
                 case "V":
-                    pos = new ComplexNumber(currentPos.getReal(), Double.parseDouble(this.tokenized.remove(0)));
-                    if (!absolute) pos.add(new ComplexNumber(0, currentPos.getImaginary()));
+                    pos = new Complex(currentPos.getReal(), Double.parseDouble(this.tokenized.remove(0)));
+                    if (!absolute) pos = pos.add(new Complex(0, currentPos.getImaginary()));
                     this.segments.add(new Line(currentPos, pos));
                     currentPos = pos;
                     break;
@@ -118,9 +118,9 @@ public class Parser {
                     end = this.fromTokenized();
 
                     if (!absolute) {
-                        control1.add(currentPos);
-                        control2.add(currentPos);
-                        end.add(currentPos);
+                        control1 = control1.add(currentPos);
+                        control2 = control2.add(currentPos);
+                        end = end.add(currentPos);
                     }
 
                     this.segments.add(new CubicBezier(currentPos, control1, control2, end));
@@ -133,14 +133,14 @@ public class Parser {
                         control1 = currentPos;
                     } else {
                         CubicBezier l = (CubicBezier) segments.getLast();
-                        control1 = ComplexNumber.add(currentPos, ComplexNumber.subtract(currentPos, l.getControl2()));
+                        control1 = currentPos.add(currentPos.subtract(l.getControl2()));
                     }
                     control2 = this.fromTokenized();
                     end = this.fromTokenized();
 
                     if (!absolute) {
-                        control2.add(currentPos);
-                        end.add(currentPos);
+                        control2 = control2.add(currentPos);
+                        end = end.add(currentPos);
                     }
 
                     this.segments.add(new CubicBezier(currentPos, control1, control2, end));
@@ -152,8 +152,8 @@ public class Parser {
                     end = this.fromTokenized();
 
                     if (!absolute) {
-                        control1.add(currentPos);
-                        end.add(currentPos);
+                        control1 = control1.add(currentPos);
+                        end = end.add(currentPos);
                     }
 
                     this.segments.add(new QuadraticBezier(currentPos, control1, end));
@@ -165,23 +165,23 @@ public class Parser {
                         control1 = currentPos;
                     else {
                         QuadraticBezier l = (QuadraticBezier) segments.getLast();
-                        control1 = ComplexNumber.add(currentPos, ComplexNumber.subtract(currentPos, l.getControl()));
+                        control1 = currentPos.add(currentPos.subtract(l.getControl()));
                     }
                     end = this.fromTokenized();
 
-                    if (!absolute) end.add(currentPos);
+                    if (!absolute) end = end.add(currentPos);
                     this.segments.add(new QuadraticBezier(currentPos, control1, end));
                     currentPos = end;
                     break;
 
                 case "A":
-                    ComplexNumber radius = this.fromTokenized();
+                    Complex radius = this.fromTokenized();
                     double rotation = Double.parseDouble(this.tokenized.remove(0));
                     boolean arc = Boolean.parseBoolean(this.tokenized.remove(0));
                     boolean sweep = Boolean.parseBoolean(this.tokenized.remove(0));
                     end = this.fromTokenized();
 
-                    if (!absolute) end.add(currentPos);
+                    if (!absolute) end = end.add(currentPos);
                     this.segments.add(new Arc(currentPos, radius, rotation, arc, sweep, end));
                     currentPos = end;
                     break;
@@ -189,8 +189,8 @@ public class Parser {
         }
     }
 
-    private ComplexNumber fromTokenized() {
-        return new ComplexNumber(Double.parseDouble(this.tokenized.remove(0)),
+    private Complex fromTokenized() {
+        return new Complex(Double.parseDouble(this.tokenized.remove(0)),
                 Double.parseDouble(this.tokenized.remove(0)));
     }
 

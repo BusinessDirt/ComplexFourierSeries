@@ -1,9 +1,9 @@
 package businessdirt.svgHandler;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
 import businessdirt.svgHandler.svg.parser.Parser;
 import businessdirt.svgHandler.svg.parser.XMLHandler;
 import businessdirt.svgHandler.svg.path.Path;
+import com.vm.jcomplex.Complex;
 import org.w3c.dom.Document;
 
 public class GuiTest {
@@ -18,18 +18,16 @@ public class GuiTest {
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
         Path[] parser = Parser.parsePaths(paths);
 
-        // normal
-        ComplexNumber offset = new ComplexNumber(0.0, 0.0);
-        drawFigure(parser[0], 5, offset);
+        drawFigure(parser[0], 1000);
+        System.out.println(parser[0]);
 
     }
 
-    private static void drawFigure(Path path, int n, ComplexNumber offset) {
+    private static void drawFigure(Path path, int n) {
         Draw.Figure figure = new Draw.Figure();
         for (int i = 0; i < n; i++) {
-            ComplexNumber point = path.point(i / (double) n);
-            System.out.println(point);
-            figure.add(ComplexNumber.add(point, offset));
+            Complex point = path.point(i / (double) n);
+            figure.add(point);
         }
         window.drawFigure(figure);
     }

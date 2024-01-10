@@ -1,38 +1,38 @@
 package businessdirt.svgHandler.svg.path;
 
-import businessdirt.svgHandler.svg.ComplexNumber;
+import com.vm.jcomplex.Complex;
 
 import java.util.Objects;
 
 public class QuadraticBezier extends SVGElement implements SegmentLength {
 
-    private final ComplexNumber control;
+    private final Complex control;
 
-    public QuadraticBezier(ComplexNumber start, ComplexNumber control, ComplexNumber end) {
+    public QuadraticBezier(Complex start, Complex control, Complex end) {
         super(start, end);
         this.control = control;
     }
 
     @Override
-    public ComplexNumber point(double pos) {
-        ComplexNumber a = ComplexNumber.multiply(this.getStart(), Math.pow(1 - pos, 2));
-        ComplexNumber b = ComplexNumber.multiply(this.getControl(), 2 * (1 - pos) * pos);
-        ComplexNumber c = ComplexNumber.multiply(this.getEnd(), Math.pow(pos, 2));
-        return ComplexNumber.add(a, ComplexNumber.add(b, c));
+    public Complex point(double pos) {
+        Complex a = this.getStart().multiply(Math.pow(1 - pos, 2));
+        Complex b = this.getControl().multiply(2 * (1 - pos) * pos);
+        Complex c = this.getEnd().multiply(Math.pow(pos, 2));
+        return a.add(b.add(c));
     }
 
     @Override
     public double length() {
-        ComplexNumber a = ComplexNumber.subtract(this.getStart(), ComplexNumber.multiply(ComplexNumber.add(this.getControl(), this.getEnd()), 2));
-        ComplexNumber b = ComplexNumber.multiply(ComplexNumber.subtract(this.getControl(), this.getStart()), 2);
+        Complex a = this.getStart().subtract(this.getControl().add(this.getEnd()).multiply(2));
+        Complex b = this.getControl().subtract(this.getStart()).multiply(2);
         double aDotB = a.getReal() * b.getReal() + a.getImaginary() + b.getImaginary();
 
-        if (a.mod() < ERROR) return a.mod();
+        if (a.abs() < ERROR) return a.abs();
 
-        if (Math.abs(aDotB + a.mod() * b.mod()) < ERROR) {
-            double k = b.mod() / a.mod();
-            if (k >= 2) return b.mod() - a.mod();
-            return a.mod() * (Math.pow(k, 2) / 2 - k + 1);
+        if (Math.abs(aDotB + a.abs() * b.abs()) < ERROR) {
+            double k = b.abs() / a.abs();
+            if (k >= 2) return b.abs() - a.abs();
+            return a.abs() * (Math.pow(k, 2) / 2 - k + 1);
         }
 
         double _a = 4 * (Math.pow(a.getReal(), 2) + Math.pow(a.getImaginary(), 2));
@@ -55,7 +55,7 @@ public class QuadraticBezier extends SVGElement implements SegmentLength {
 
     public boolean isSmoothFrom(SVGElement previous) {
         if (previous instanceof QuadraticBezier p) return this.getStart().equals(p.getEnd()) &&
-                ComplexNumber.subtract(this.getControl(), this.getStart()).equals(ComplexNumber.subtract(p.getEnd(), p.getControl()));
+                this.getControl().subtract(this.getStart()).equals(p.getEnd().subtract(p.getControl()));
         return this.getControl().equals(this.getStart());
     }
 
@@ -68,7 +68,7 @@ public class QuadraticBezier extends SVGElement implements SegmentLength {
                 && Objects.equals(this.getEnd(), that.getEnd());
     }
 
-    public ComplexNumber getControl() {
+    public Complex getControl() {
         return this.control;
     }
 }
