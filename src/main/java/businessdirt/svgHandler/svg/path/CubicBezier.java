@@ -24,13 +24,10 @@ public class CubicBezier extends SVGElement implements SegmentLength {
     public Complex point(double pos) {
         // (1 - pos)^3 * this.getStart()
         Complex a = this.getStart().multiply(Math.pow(1 - pos, 3));
-
         // 3 * (1 - pos)^2 * pos * this.getControl1()
         Complex b = this.getControl1().multiply(3 * Math.pow(1 - pos, 2) * pos);
-
         // 3 * (1 - pos) * pos^2 * this.getControl2()
         Complex c = this.getControl2().multiply(3 * (1 - pos) * Math.pow(pos, 2));
-
         // pos^3 * this.getEnd()
         Complex d = this.getEnd().multiply(Math.pow(pos, 3));
 
@@ -57,14 +54,6 @@ public class CubicBezier extends SVGElement implements SegmentLength {
         CubicBezier that = (CubicBezier) o;
         return Objects.equals(this.getStart(), that.getStart()) && Objects.equals(this.getControl1(), that.getControl1())
                 && Objects.equals(this.getControl2(), that.getControl2()) && Objects.equals(this.getEnd(), that.getEnd());
-    }
-
-    @Override
-    public void reverse() {
-        super.reverse();
-        Complex _control1 = new Complex(this.getControl1().getReal(), this.getControl1().getImaginary());
-        this.control1 = new Complex(this.getControl2().getReal(), this.getControl2().getImaginary());
-        this.control2 = _control1;
     }
 
     public Complex getControl1() {

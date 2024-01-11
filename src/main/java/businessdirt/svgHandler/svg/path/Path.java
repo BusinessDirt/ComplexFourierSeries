@@ -40,22 +40,6 @@ public class Path extends LinkedList<SVGElement> {
         this.length = length;
     }
 
-    public void reverse() {
-        // reverse all the elements
-        for (SVGElement element : this) element.reverse();
-
-        // reverse lists
-        Collections.reverse(this);
-        Collections.reverse(this.fractions);
-        Collections.reverse(this.lengths);
-
-        // swap move and close
-        Move _move = new Move(this.getFirst().getStart());
-        Close _close = new Close(this.getLast().getStart(), this.getLast().getEnd());
-        this.set(0, _move);
-        this.set(this.size() - 1, _close);
-    }
-
     public double length() {
         this.calcLengths();
         return this.length;
@@ -81,7 +65,7 @@ public class Path extends LinkedList<SVGElement> {
         if (pos == 1.0) return this.getLast().point(pos);
 
         this.calcLengths();
-        int i = Bisect.bisect_right(this.fractions.stream().mapToDouble(e -> e).toArray(), pos);
+        int i = Bisect.bisect(this.fractions.stream().mapToDouble(e -> e).toArray(), pos);
 
         if (i == 0) {
             double segmentPos = pos / this.fractions.get(0);

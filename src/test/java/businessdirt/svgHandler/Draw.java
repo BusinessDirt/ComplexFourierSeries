@@ -28,6 +28,7 @@ public class Draw extends JLabel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g2d.setColor(Color.BLUE);
         for (Figure f : this.figures) f.draw(g2d, this.drawLines);
 
         repaint();
@@ -54,25 +55,18 @@ public class Draw extends JLabel {
         }
 
         public void draw(Graphics2D g2d, boolean drawLines) {
-            for (int i = 0; i < points.size(); i++) {
-                if (!drawLines)
-                    g2d.drawOval((int) this.points.get(i).getReal(), (int) this.points.get(i).getImaginary(), 2, 2);
-                else
+            for (int i = 0; i < this.points.size(); i++) {
+                if (drawLines) {
                     drawLines(g2d, i);
+                    continue;
+                }
+                g2d.drawOval((int) this.points.get(i).getReal(), (int) this.points.get(i).getImaginary(), 2, 2);
             }
         }
 
         private void drawLines(Graphics2D g2d, int i) {
-            if (i == this.points.size() - 1) {
-                drawLinesHelper(g2d, i, 0);
-                return;
-            }
-            drawLinesHelper(g2d, i, i+1);
-        }
-
-        private void drawLinesHelper(Graphics2D g2d, int i1, int i2) {
-            Complex z1 = this.points.get(i1);
-            Complex z2 = this.points.get(i2);
+            int i2 = i == this.points.size() - 1 ? 0 : i + 1;
+            Complex z1 = this.points.get(i), z2 = this.points.get(i2);
             g2d.drawLine((int) z1.getReal(), (int) z1.getImaginary(), (int) z2.getReal(), (int) z2.getImaginary());
         }
     }

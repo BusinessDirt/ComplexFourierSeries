@@ -18,7 +18,7 @@ public class GuiTest {
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
         Path[] parser = Parser.parsePaths(paths);
 
-        drawFigure(parser[0], 1000);
+        drawFigure(parser[0], 50);
         System.out.println(parser[0]);
 
     }
@@ -27,7 +27,7 @@ public class GuiTest {
         Draw.Figure figure = new Draw.Figure();
         for (int i = 0; i < n; i++) {
             Complex point = path.point(i / (double) n);
-            figure.add(point);
+            figure.add(point.multiply(3));
         }
         window.drawFigure(figure);
     }
