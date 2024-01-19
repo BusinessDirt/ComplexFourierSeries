@@ -28,7 +28,8 @@ public class Draw extends JLabel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2d.setColor(Color.BLUE);
+        g2d.setColor(Color.getColor("1e1e1e"));
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (Figure f : this.figures) f.draw(g2d, this.drawLines);
 
         repaint();
@@ -45,9 +46,16 @@ public class Draw extends JLabel {
     public static class Figure {
 
         private final List<Complex> points;
+        private final Color color;
 
-        public Figure() {
+        public Figure(Color color) {
+            this.color = color;
             this.points = new LinkedList<>();
+        }
+
+        public Figure(List<Complex> points, Color color) {
+            this(color);
+            this.points.addAll(points);
         }
 
         public void add(Complex z) {
@@ -55,6 +63,7 @@ public class Draw extends JLabel {
         }
 
         public void draw(Graphics2D g2d, boolean drawLines) {
+            g2d.setColor(this.color);
             for (int i = 0; i < this.points.size(); i++) {
                 if (drawLines) {
                     drawLines(g2d, i);

@@ -39,12 +39,6 @@ public class Parser {
         this.parsePath();
     }
 
-    private Parser(String path, List<String> tokenized, Path segments) {
-        this.path = path;
-        this.tokenized = tokenized.subList(0, tokenized.size());
-        this.segments = segments.clone();
-    }
-
     public static Path[] parsePaths(String[] paths) {
         Path[] parsed = new Path[paths.length];
         for (int i = 0; i < paths.length; i++) {
@@ -196,10 +190,5 @@ public class Parser {
 
     public Path path() {
         return this.segments;
-    }
-
-    @Override
-    public Parser clone() {
-        return new Parser(this.path, this.tokenized, this.segments.clone());
     }
 }
