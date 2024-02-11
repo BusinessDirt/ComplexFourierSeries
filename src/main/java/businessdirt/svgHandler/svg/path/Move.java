@@ -2,7 +2,7 @@ package businessdirt.svgHandler.svg.path;
 
 import com.vm.jcomplex.Complex;
 
-public class Move extends SVGElement {
+public class Move extends Linear {
 
     public Move(Complex to) {
         super(to, to);

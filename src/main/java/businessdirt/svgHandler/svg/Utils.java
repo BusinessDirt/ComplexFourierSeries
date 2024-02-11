@@ -1,6 +1,8 @@
 package businessdirt.svgHandler.svg;
 
-public class Bisect {
+import com.vm.jcomplex.Complex;
+
+public class Utils {
     public static int bisect(double[] array, double x) {
         return bisect(array, x, 0, array.length);
     }
@@ -16,5 +18,9 @@ public class Bisect {
             if (x < array[mid]) high = mid;
             else low = mid;
         }
+    }
+
+    public static boolean equals(Complex z1, Complex z2) {
+        return z1.getReal() == z2.getReal() && z1.getImaginary() == z2.getImaginary();
     }
 }

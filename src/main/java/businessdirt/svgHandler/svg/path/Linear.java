@@ -4,7 +4,7 @@ import com.vm.jcomplex.Complex;
 
 import java.util.Objects;
 
-public class Linear extends SVGElement {
+public abstract class Linear extends SVGElement {
 
     public Linear(Complex start, Complex end) {
         super(start, end);

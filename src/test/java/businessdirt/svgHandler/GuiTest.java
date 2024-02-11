@@ -1,7 +1,9 @@
 package businessdirt.svgHandler;
 
-import businessdirt.svgHandler.svg.parser.Parser;
-import businessdirt.svgHandler.svg.parser.XMLHandler;
+import businessdirt.svgHandler.svg.parsing.XMLHandler;
+import businessdirt.svgHandler.svg.parsing.generator.Generator;
+import businessdirt.svgHandler.svg.parsing.parser.Parser;
+import businessdirt.svgHandler.svg.parsing.tokenizer.Tokenizer;
 import businessdirt.svgHandler.svg.path.Path;
 import com.vm.jcomplex.Complex;
 import org.w3c.dom.Document;
@@ -11,22 +13,27 @@ import java.awt.*;
 public class GuiTest {
 
     private static Gui window;
-    private static final double MULTIPLIER = 3.0;
+    private static final double MULTIPLIER = 2.0;
 
     public static void main(String[] args) {
         GuiTest.window = new Gui();
         window.setDrawLines(true);
 
-        Document doc = XMLHandler.getDocumentFromFile("src/test/resources/test.svg");
+        Document doc = XMLHandler.getDocumentFromFile("src/test/resources/twitter.svg");
         String[] paths = XMLHandler.getSvgPathsFromDocument(doc);
-        Path[] parser = Parser.parsePaths(paths);
+        //Path[] parser = OldParser.parsePaths(paths);
+
+        Tokenizer tokenizer = new Tokenizer(paths[0]);
+        Parser parser = new Parser(tokenizer);
+        Generator generator = new Generator(parser);
+        Path path = generator.path();
 
         //drawFigure(parser[0], 5, Color.BLUE);
-        drawFigure(parser[0], 10, Color.GREEN);
+        drawFigure(path, 50, Color.GREEN);
         //drawFigure(parser[0], 500, Color.ORANGE);
 
         //drawFigure2(parser[0], 5, Color.BLUE, new Complex(500, 0));
-        drawFigure2(parser[0], 10, Color.GREEN, new Complex(500, 0));
+        //drawFigure2(parser[0], 50, Color.GREEN, new Complex(500, 0));
         //drawFigure2(parser[0], 500, Color.ORANGE, new Complex(500, 0));
     }
 

@@ -1,4 +1,4 @@
-package businessdirt.svgHandler.svg.parser;
+package businessdirt.svgHandler.svg.parsing;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
